@@ -24,4 +24,24 @@ export class UserRepository {
   ): Promise<{ token: string; user: User }> {
     return await this.userDatasource.login(email, password);
   }
+
+  async getAuthenticatedUser(): Promise<User | null> {
+    const token = localStorage.getItem("jwt_token");
+    if (!token) {
+      return null;
+    }
+
+    try {
+      const user = await this.userDatasource.getProfile(token);
+      return user;
+    } catch (error) {
+      console.error("Error getting authenticated user: ", error);
+      localStorage.removeItem("jwt_token");
+      return null;
+    }
+  }
+
+  logout(): void {
+    localStorage.removeItem("jwt_token");
+  }
 }

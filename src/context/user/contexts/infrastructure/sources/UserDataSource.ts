@@ -66,4 +66,31 @@ export class UserDataSource {
       throw error;
     }
   }
+
+  async getProfile(token: string): Promise<User> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/profile`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message ||
+            `Failed to fetch profile with status: ${response.status}`
+        );
+      }
+
+      const data = await response.json();
+
+      return User.fromPrimitives(data);
+    } catch (error) {
+      console.error("Failed to get user profile:", error);
+      throw error;
+    }
+  }
 }
