@@ -54,7 +54,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         setIsAuthenticated(true);
       }
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : String(err); // CAMBIO AQUÍ: Manejo seguro del error
+      const errorMessage = err instanceof Error ? err.message : String(err);
       console.error("Error loading authenticated user:", errorMessage);
       setError(errorMessage || "Failed to load user session.");
       setUser(null);

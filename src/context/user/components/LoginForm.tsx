@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useUser } from "../contexts/UserContext";
+import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -11,11 +12,14 @@ export default function LoginForm() {
 
   const { login, isLoading, error } = useUser();
 
+  const router = useRouter();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await login(email, password);
       console.log("Login exitoso!", email, password);
+      router.push("/create-bike-route");
     } catch (error) {
       console.error("Error al intentar iniciar sesión:", error);
     }

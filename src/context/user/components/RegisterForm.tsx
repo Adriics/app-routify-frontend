@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useUser } from "../contexts/UserContext";
+import { useRouter } from "next/navigation";
 
 export default function RegisterForm() {
   const [name, setName] = useState("");
@@ -22,15 +23,15 @@ export default function RegisterForm() {
   // Obtenemos las funciones y estados del contexto de usuario
   const { register, isLoading, error } = useUser();
 
+  const router = useRouter();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Previene el comportamiento por defecto del formulario
     try {
       await register(name, email, password);
-      // Si el registro es exitoso, el contexto actualizará el estado
-      // Aquí podrías añadir una redirección, por ejemplo:
-      // import { useRouter } from 'next/navigation';
-      // const router = useRouter();
-      // router.push('/dashboard');
+
+      router.push("/login");
+
       console.log("Registro exitoso!");
     } catch (err) {
       // El error ya se maneja y se guarda en el estado 'error' del contexto
